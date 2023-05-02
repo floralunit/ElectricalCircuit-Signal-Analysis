@@ -1,0 +1,15 @@
+fpprintprec:5;  /*количество знаков после запятой*/
+
+U:4;T:0.00001;
+tn:0;tk:T;N:11;dt:(tk-tn)/(N-1),numer; /*определение начальных условий для расчета Uvx(t)*/
+
+Uvx(t):=if  (0<=t and t<T/2) then 2*U*(t/T)  else 0; /*определение значений Uvx(t)*/
+
+for t:tn thru tk step dt do display(Uvx(t)),numer; /*вывод значений на экран морнитора*/
+
+a: 2;b:4;c:-1;
+Uvix(t):=a*Uvx(t)*Uvx(t)+b*Uvx(t)+c;
+for t:tn thru tk step dt do display(Uvix(t)),numer;
+
+wxplot2d([Uvx(t)], [t,tn,tk],[gnuplot_preamble, "set grid;"]);
+wxplot2d([Uvix(t)], [t,tn,tk],[y,0,100], [gnuplot_preamble, "set grid;"]);
