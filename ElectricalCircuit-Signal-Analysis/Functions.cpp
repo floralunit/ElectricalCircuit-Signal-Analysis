@@ -31,9 +31,58 @@ void form_tabl(int n, double* t, double* Uvx, double* Uvix) {
 	for (int i = 0; i < n; i++) // ¬ывод данных в виде таблицы
 		printf("\n % 3d % 6.6lf % 6.6lf % 6.6lf", i, t[i], Uvx[i], Uvix[i]);
 }
-void parametr() {
 
+
+double time_min(int n, double* t, double* U) {
+	double min = U[0];
+	int min_index = 0;
+	int vvod = 0;
+	for (int i = 0; i < n; i++)
+	{
+		if (min < U[i])
+		{
+			min = U[i];
+			min_index = i;
+		}
+	}
+	//printf("ћинимальное значение принимает при времени t = %f\n", t[min_index]);
+	return t[min_index];
 }
+double time_max(int n, double* t, double* U) {
+	double max = U[0];
+	int max_index = 0;
+	for (int i = 0; i < n; i++)
+	{
+		if (max < U[i])
+		{
+			max = U[i];
+			max_index = i;
+		}
+	}
+	////
+	/////*	for (int i = 0; i < n; i++)
+	////		if (U[i] == max) { vrem = t[i]; break*/; }
+		//printf("ћаксимальное значение принимает при времени t = %f\n", t[max_index]);
+	return U[max_index];
+}
+
+void pogr(int n, double* t, double& dt, double* Uvx, double* Uvix) {
+	int p = 1;		 // текуща€ погрешность
+	float eps = 0.001;	// заданна€ погрешность 
+	double par = 1000; // начальное значение параметра (очень большое число)
+	double par1 = 0;
+	while (p > eps) {
+		form_t(n, t, dt);
+		form_Uvx(n, t, Uvx);
+		form_Uvix(n, t, Uvx, Uvix);
+		par1 = time_max(n, t, Uvix);
+		p = fabs(par - par1) / par1;
+		cout << "\nn = " << n << "  ѕараметр = " << par1 << "  ѕогрешность = " << p << endl;
+		par = par1;
+		n = 2 * n;
+	}
+}
+
 
 void write_file(int n, double* t, double* Uvx, double* Uvix) {
 	FILE* f1, * f2, * f3; 		 //ќбъ€вление указател€ на файловую переменную
