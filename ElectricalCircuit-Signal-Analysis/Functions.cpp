@@ -1,4 +1,6 @@
 #include <iostream>
+#include <fstream>
+#include <locale>
 #define _CRT_SECURE_NO_DEPRECATE
 #pragma warning (disable : 4996)
 using namespace std;
@@ -34,19 +36,40 @@ void form_tabl(int n, double* t, double* Uvx, double* Uvix) {
 
 
 void write_file(int n, double* t, double* Uvx, double* Uvix) {
-	FILE* f1, * f2, * f3; 		 //Объявление указателя на файловую переменную
-	f1 = fopen("massiv_t.txt", "w");
-	f2 = fopen("massiv_Uvx.txt", "w");  //Открытие файлов на запись
-	f3 = fopen("massiv_Uvix.txt", "w");
+
+	std::ofstream file1("massiv_t.txt");
+	std::ofstream file2("massiv_Uvx.txt");
+	std::ofstream file3("massiv_Uvix.txt");
+	std::locale loc(std::locale::classic(), new std::numpunct<char>('.'));
+	file1.imbue(loc); // установка локали для файла
+	file2.imbue(loc); // установка локали для файла
+	file3.imbue(loc); // установка локали для файла
+
+	//FILE* f1, * f2, * f3; 		 //Объявление указателя на файловую переменную
+	//f1 = fopen("massiv_t.txt", "w");
+	//f2 = fopen("massiv_Uvx.txt", "w");  //Открытие файлов на запись
+	//f3 = fopen("massiv_Uvix.txt", "w");
+
 	for (int i = 0; i < n; i++)
 	{
-		fprintf(f1, "\n %6.6lf", t[i]);
-		fprintf(f2, "\n %6.6lf", Uvx[i]);         //Запись данных в файл
-		fprintf(f3, "\n%6.6lf", Uvix[i]);
+		//fprintf(f1, "\n %6.6lf", t[i]);
+		//fprintf(f2, "\n %6.6lf", Uvx[i]);         //Запись данных в файл
+		//fprintf(f3, "\n%6.6lf", Uvix[i]);
+		file1 << t[i] << std::endl;
+		file2 << Uvx[i] << std::endl;
+		file3 << Uvix[i] << std::endl;
 	}
-	fclose(f1);
-	fclose(f2);                                       //Закрытие файлов
-	fclose(f3);
+
+
+	//fclose(f1);
+	//fclose(f2);      
+	//fclose(f3);
+
+	file1.close();
+	file2.close();
+	file3.close();
+
+
 	printf("Запись прошла успешно!\n");
 }
 
@@ -66,15 +89,15 @@ void zast_read() {
 	fclose(f);
 }
 
-double time_min(int n, double* t, double* U) {
-	double min = U[0];
+double time_min(int n, double* t, double* Ui) {
+	double min = Ui[0];
 	int min_index = 0;
 	int vvod = 0;
 	for (int i = 0; i < n; i++)
 	{
-		if (min > U[i])
+		if (min > Ui[i])
 		{
-			min = U[i];
+			min = Ui[i];
 			min_index = i;
 		}
 	}
@@ -82,15 +105,15 @@ double time_min(int n, double* t, double* U) {
 	return t[min_index];
 }
 
-double time_max(int n, double* t, double* U) {
-	double max = U[0];
+double time_max(int n, double* t, double* Ui) {
+	double max = Ui[0];
 	int max_index = 0;
 	int vvod = 0;
 	for (int i = 0; i < n; i++)
 	{
-		if (max < U[i])
+		if (max < Ui[i])
 		{
-			max = U[i];
+			max = Ui[i];
 			max_index = i;
 		}
 	}
@@ -99,18 +122,18 @@ double time_max(int n, double* t, double* U) {
 	return t[max_index];
 }
 
-double Umax(int n, double* t, double* U) {
-	double max = U[0];
+double Umax(int n, double* t, double* Ui) {
+	double max = Ui[0];
 	int max_index = 0;
 	for (int i = 0; i < n; i++)
 	{
-		if (max < U[i])
+		if (max < Ui[i])
 		{
-			max = U[i];
+			max = Ui[i];
 			max_index = i;
 		}
 	}
-	return U[max_index];
+	return Ui[max_index];
 }
 
 
