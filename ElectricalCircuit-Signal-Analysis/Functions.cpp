@@ -4,11 +4,10 @@
 #define _CRT_SECURE_NO_DEPRECATE
 #pragma warning (disable : 4996)
 using namespace std;
-const double T = 0.00001;
 
 void form_t(int n, double* t, double& dt)
 {
-	double  tn = 0, tk = T;
+	double  tn = 10, tk = 90;
 	dt = (tk - tn) / (n - 1);
 	for (int i = 0; i < n; i++)
 		t[i] = tn + i * dt;
@@ -16,10 +15,12 @@ void form_t(int n, double* t, double& dt)
 
 
 void form_Uvx(int n, double* t, double* Uvx) {
-	int U = 4;
+	int U1 = 100, U2 = 80, t1 = 22, t2 = 70;
+	double  tn = 10, tk = 90;
 	for (int i = 0; i < n; i++) // Формирование массива Uvx
-		if (0 <= t[i] and t[i] < T / 2) Uvx[i] = 2 * U * (t[i] / T);
-		else Uvx[i] = 0;
+		if (t[i] <= t1) Uvx[i] = ((t[i] - tn) * (U1 - 0)) / (t1 - tn);
+		else if (t[i] <= t2) Uvx[i] = (((t[i] - t1) * (U2 - U1)) / (t2 - t1)) + U1;
+		else if (t[i] > t2) Uvx[i] = (((t[i] - t2) * (0 - U2)) / (tk - t2)) + U2;
 }
 
 void form_Uvix(int n, double* t, double* Uvx, double* Uvix) {
