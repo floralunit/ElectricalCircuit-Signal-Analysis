@@ -14,6 +14,8 @@ void write_file(int n, double* t, double* Uvx, double* Uvix);
 
 void zast_read();
 
-double Umax(int n, double* t, double* Ui);
-double time_min(int n, double* t, double* Ui);
-double time_max(int n, double* t, double* Ui);
+double Umax(int n, double* Ui);
+
+double Umin(int n, double* Ui);
+
+void parametr(int n, double* Ui);

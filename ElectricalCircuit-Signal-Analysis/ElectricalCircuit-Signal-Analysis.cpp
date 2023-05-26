@@ -1,5 +1,6 @@
 ﻿#include <iostream>
 #include "Functions.h"
+#include <Windows.h>
 using namespace std;
 # define N 10000
 #define _CRT_SECURE_NO_DEPRECATE
@@ -13,12 +14,14 @@ int main()
 		double t[N], Uvx[N], Uvix[N], dt;
 		int ch;
 
-		cout << "\nВыберите задание: \n1 - контрольный расчет для n точек \n2 - расчет погрешности для Uvx \n3 - расчет погрешности для Uvix \n4 – расчет параметра с заданной точностью\n=> ";
+		cout << "\nВыберите задание: \n1 - контрольный расчет для n точек \n2 - расчет погрешности для Uvx \n3 - расчет погрешности для Uvix \n4 – расчет параметра с заданной точностью \n5 - открыть график Uvx \n6 - открыть график Uvix \n=> ";
 		cin >> ch;
 
 		int n;
-		cout << "\nВведите кол - во точек  для контрольного расчета: ";
-		cin >> n;
+		if (ch < 5) {
+			cout << "\nВведите кол - во точек  для контрольного расчета: ";
+			cin >> n;
+		}
 
 		switch (ch) {
 		case 1: {
@@ -58,11 +61,15 @@ int main()
 		case 4: {
 			form_t(n, t, dt);
 			form_Uvx(n, t, Uvx);
-			form_Uvix(n, t, Uvx, Uvix);
-			cout << "Максимальное время для Uvx: " << time_max(n, t, Uvx) << endl;
-			cout << "Максимальное время для Uvix: " << time_max(n, t, Uvix) << endl;
-			cout << "Минимальное время для Uvx: " << time_min(n, t, Uvx) << endl;
-			cout << "Минимальное время для Uvix: " << time_min(n, t, Uvix) << endl;
+			parametr(n, Uvx);
+			break;
+		}
+		case 5: {
+			ShellExecuteA(NULL, "open", "Uvx1.png", NULL, NULL, SW_SHOWNORMAL);
+			break;
+		}
+		case 6: {
+			ShellExecuteA(NULL, "open", "Uvix1.png", NULL, NULL, SW_SHOWNORMAL);
 			break;
 		}
 		default: {
